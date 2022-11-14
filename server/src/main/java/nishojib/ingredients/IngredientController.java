@@ -8,12 +8,12 @@ import nishojib.core.models.StandardResponse;
 import nishojib.core.models.StatusResponse;
 import nishojib.ingredients.models.DeletedIngredient;
 import nishojib.ingredients.models.Ingredient;
+import nishojib.ingredients.models.IngredientDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static spark.Spark.get;
-import static spark.Spark.delete;
+import static spark.Spark.*;
 
 public class IngredientController {
     IngredientDataMapper ingredientDataMapper;
@@ -51,6 +51,14 @@ public class IngredientController {
                 System.out.println(e.getStackTrace());
                 return "";
             }
+        });
+
+        post("ingredients", (req, res) -> {
+            res.type("application/json");
+            IngredientDTO ingredient = new Gson().fromJson(req.body(), IngredientDTO.class);
+            ingredientDataMapper.create(ingredient);
+
+            return gson.toJson(new StandardResponse(StatusResponse.SUCCESS));
         });
 
         delete("ingredients/:ingredientId", (req, res) -> {

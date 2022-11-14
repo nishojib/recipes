@@ -3,6 +3,7 @@ package nishojib.ingredients;
 import nishojib.core.exceptions.DataMapperException;
 import nishojib.core.exceptions.GatewayException;
 import nishojib.ingredients.models.Ingredient;
+import nishojib.ingredients.models.IngredientDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -55,6 +56,14 @@ public class IngredientDataMapper {
         }
     }
 
+    public synchronized void create(IngredientDTO ingredientDTO) throws DataMapperException {
+        try {
+            ingredientGateway.create(ingredientDTO);
+        } catch (GatewayException e)    {
+            throw new DataMapperException("Error occured creating ingredient in data source");
+        }
+    }
+
     public static Ingredient getIngredientFromResultSet(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         String name = rs.getString("name");
@@ -64,4 +73,5 @@ public class IngredientDataMapper {
 
         return new Ingredient(id, name, amount, unit, original);
     }
+
 }
