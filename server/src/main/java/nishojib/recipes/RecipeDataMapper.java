@@ -52,7 +52,7 @@ public class RecipeDataMapper {
             recipeGateway.deleteById(recipeId);
             return true;
         } catch (GatewayException e) {
-            throw new DataMapperException("Error occurred reading recipes from data source");
+            throw new DataMapperException("Error occurred deleting recipes from data source");
         }
     }
 
