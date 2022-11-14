@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 
 public class StandardResponse {
 
-    private StatusResponse status;
+    private final StatusResponse status;
     private String message;
     private JsonElement data;
 

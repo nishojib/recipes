@@ -1,5 +1,8 @@
 package nishojib.recipes;
 
+import nishojib.ingredients.IngredientDataMapper;
+import nishojib.ingredients.IngredientGateway;
+import nishojib.ingredients.models.Ingredient;
 import nishojib.recipes.models.Recipe;
 import nishojib.core.exceptions.DataMapperException;
 import nishojib.core.exceptions.GatewayException;
@@ -12,9 +15,11 @@ import java.util.List;
 
 public class RecipeDataMapper {
     RecipeGateway recipeGateway;
+    IngredientDataMapper ingredientMapper;
 
     public RecipeDataMapper() {
         recipeGateway = new RecipeGateway();
+        ingredientMapper = new IngredientDataMapper();
     }
 
     public synchronized List<Recipe> findAll() throws DataMapperException {
@@ -86,6 +91,29 @@ public class RecipeDataMapper {
             recipeGateway.update(recipeId, recipe);
         } catch (GatewayException e) {
             throw new DataMapperException("Error occurred updating recipe in data source");
+        }
+    }
+
+    public List<Ingredient> findIngredientsOfOneById(int recipeId) throws DataMapperException {
+        try {
+            ArrayList<Integer> ingredientIds = new ArrayList<>();
+            ResultSet rs = recipeGateway.findIngredientIdsFromRecipeId(recipeId);
+
+            while (rs.next()) {
+                int id = rs.getInt("ingredientId");
+                ingredientIds.add(id);
+            }
+
+            ArrayList<Ingredient> ingredients = new ArrayList<>();
+            for (Integer id: ingredientIds) {
+                Ingredient ingredient = ingredientMapper.findOneById(id);
+                ingredients.add(ingredient);
+            }
+
+            return ingredients;
+        } catch (GatewayException | SQLException e) {
+            System.out.println(e.getMessage());
+            throw new DataMapperException("Error occurred reading recipes from data source");
         }
     }
 }

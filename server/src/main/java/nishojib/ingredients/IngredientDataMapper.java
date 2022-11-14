@@ -16,6 +16,17 @@ public class IngredientDataMapper {
     public IngredientDataMapper() {
         ingredientGateway = new IngredientGateway();
     }
+
+    public static Ingredient getIngredientFromResultSet(ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
+        String name = rs.getString("name");
+        float amount = rs.getFloat("amount");
+        String unit = rs.getString("unit");
+        String original = rs.getString("original");
+
+        return new Ingredient(id, name, amount, unit, original);
+    }
+
     public synchronized List<Ingredient> findAll() throws DataMapperException {
         try {
             ResultSet rs = ingredientGateway.findAll();
@@ -59,7 +70,7 @@ public class IngredientDataMapper {
     public synchronized void create(IngredientDTO ingredientDTO) throws DataMapperException {
         try {
             ingredientGateway.create(ingredientDTO);
-        } catch (GatewayException e)    {
+        } catch (GatewayException e) {
             throw new DataMapperException("Error occured creating ingredient in data source");
         }
     }
@@ -67,20 +78,10 @@ public class IngredientDataMapper {
     public synchronized void update(int ingredientId, IngredientDTO ingredient) throws DataMapperException {
         try {
             ingredientGateway.update(ingredientId, ingredient);
-        } catch (GatewayException e)    {
+        } catch (GatewayException e) {
             throw new DataMapperException("Error occured updating ingredient in data source");
 
         }
-    }
-
-    public static Ingredient getIngredientFromResultSet(ResultSet rs) throws SQLException {
-        int id = rs.getInt("id");
-        String name = rs.getString("name");
-        float amount = rs.getFloat("amount");
-        String unit = rs.getString("unit");
-        String original = rs.getString("original");
-
-        return new Ingredient(id, name, amount, unit, original);
     }
 
 }

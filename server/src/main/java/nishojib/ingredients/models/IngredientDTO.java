@@ -1,10 +1,10 @@
 package nishojib.ingredients.models;
 
 public class IngredientDTO {
-    private String name;
-    private float amount;
-    private String unit;
-    private String original;
+    private final String name;
+    private final float amount;
+    private final String unit;
+    private final String original;
 
     public IngredientDTO(String name, float amount, String unit, String original) {
         this.name = name;

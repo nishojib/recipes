@@ -35,6 +35,18 @@ public class RecipeGateway {
         }
     }
 
+    public ResultSet findIngredientIdsFromRecipeId(int recipeId) throws GatewayException {
+        try {
+            Connection conn = connect("recipes.sqlite");
+            String sql = "SELECT ingredientId FROM recipes_ingredients WHERE recipeId=" + recipeId;
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            return rs;
+        } catch (SQLException e) {
+            throw new GatewayException("Error occurred reading recipe from data source");
+        }
+    }
+
     public void deleteById(int recipeId) throws GatewayException {
         Connection conn = null;
 
@@ -120,7 +132,6 @@ public class RecipeGateway {
             throw new GatewayException("Error occurred creating recipe in data source");
         }
     }
-
     public void update(int recipeId, RecipeDTO recipe) throws GatewayException {
         Connection conn = null;
 

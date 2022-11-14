@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import nishojib.core.exceptions.DataMapperException;
 import nishojib.core.models.StandardResponse;
 import nishojib.core.models.StatusResponse;
+import nishojib.ingredients.models.Ingredient;
 import nishojib.recipes.models.DeletedRecipe;
 import nishojib.recipes.models.Recipe;
 import nishojib.recipes.models.RecipeDTO;
@@ -42,6 +43,21 @@ public class RecipeController {
             }
 
             return gson.toJson(new StandardResponse(StatusResponse.SUCCESS, gson.toJsonTree(recipes)));
+        });
+
+        get("/recipes/:recipeId/ingredients", (req, res) -> {
+            res.type("application/json");
+            String recipeIdStr = req.params(":recipeId");
+            int recipeId = Integer.parseInt(recipeIdStr);
+            List<Ingredient> ingredients;
+
+            try {
+                ingredients = recipeDataMapper.findIngredientsOfOneById(recipeId);
+            } catch (DataMapperException e) {
+                return gson.toJson(new StandardResponse(StatusResponse.ERROR, e.getMessage()));
+            }
+
+            return gson.toJson(new StandardResponse(StatusResponse.SUCCESS, gson.toJsonTree(ingredients)));
         });
 
         get("/recipes", (req, res) -> {

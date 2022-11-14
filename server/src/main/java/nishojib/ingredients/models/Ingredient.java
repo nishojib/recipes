@@ -1,10 +1,10 @@
 package nishojib.ingredients.models;
 public class Ingredient {
-    private int id;
-    private String name;
-    private float amount;
-    private String unit;
-    private String original;
+    private final int id;
+    private final String name;
+    private final float amount;
+    private final String unit;
+    private final String original;
 
     public Ingredient(int id, String name, float amount, String unit, String original) {
         this.id = id;
@@ -14,28 +14,4 @@ public class Ingredient {
         this.original = original;
     }
 
-    public int getId() {
-        return this.id;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public float getAmount() {
-        return this.amount;
-    }
-
-    public String getUnit() {
-        return this.unit;
-    }
-
-    public String getOriginal() {
-        return this.original;
-    }    
-
-    @Override
-    public String toString() {
-        return id + ": " + name;
-    }
 }
