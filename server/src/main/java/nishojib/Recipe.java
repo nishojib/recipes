@@ -26,4 +26,9 @@ public class Recipe {
         this.instructions = instructions;
         this.summary = summary;
     }
+
+    @Override
+    public String toString() {
+        return id + ": " + title;
+    }
 }
