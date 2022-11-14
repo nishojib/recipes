@@ -14,6 +14,26 @@ public class Ingredient {
         this.original = original;
     }
 
+    public int getId() {
+        return this.id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public float getAmount() {
+        return this.amount;
+    }
+
+    public String getUnit() {
+        return this.unit;
+    }
+
+    public String getOriginal() {
+        return this.original;
+    }    
+
     @Override
     public String toString() {
         return id + ": " + name;

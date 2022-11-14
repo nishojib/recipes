@@ -64,6 +64,15 @@ public class IngredientDataMapper {
         }
     }
 
+    public synchronized void updateIngredient(Ingredient ingredient) throws DataMapperException {
+        try {
+            ingredientGateway.updateIngredient(ingredient);
+        } catch (GatewayException e)    {
+            throw new DataMapperException("Error occured updating ingredient in data source");
+
+        }
+    }
+
     public static Ingredient getIngredientFromResultSet(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         String name = rs.getString("name");

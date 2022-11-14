@@ -1,6 +1,7 @@
 package nishojib.ingredients;
 
 import nishojib.core.exceptions.GatewayException;
+import nishojib.ingredients.models.Ingredient;
 import nishojib.ingredients.models.IngredientDTO;
 
 import java.sql.*;
@@ -93,6 +94,38 @@ public class IngredientGateway {
                 throw new GatewayException("Error rolling back");
             }
             throw new GatewayException("Error occured creating ingredient in data source");
+        }
+    }
+
+    public void updateIngredient(Ingredient ingredient) throws GatewayException {
+        Connection conn = null;
+
+        try {
+            conn = connect("recipes.sqlite");
+
+            String sqlForCreatingIngredients = "UPDATE ingredients SET name = ?, amount = ?, unit = ?, original = ? WHERE id = ?";
+
+            PreparedStatement pstmt = conn.prepareStatement(sqlForCreatingIngredients, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, ingredient.getName());
+            pstmt.setFloat(2, ingredient.getAmount());
+            pstmt.setString(3, ingredient.getUnit());
+            pstmt.setString(4, ingredient.getOriginal());
+            pstmt.setInt(5, ingredient.getId());
+
+            int rowAffected = pstmt.executeUpdate();
+
+            if (rowAffected != 1)   {
+                conn.rollback();
+            }
+
+            pstmt.close();
+        } catch (SQLException e1)    {
+            try {
+                if (conn != null)   conn.rollback();
+            } catch (SQLException e2)   {
+                throw new GatewayException("Error rolling back");
+            }
+            throw new GatewayException("Error occured updating ingredient in data source");
         }
     }
 

@@ -61,6 +61,14 @@ public class IngredientController {
             return gson.toJson(new StandardResponse(StatusResponse.SUCCESS));
         });
 
+        put("ingredients", (req, res) -> {
+            res.type("application/json");
+            Ingredient ingredient = new Gson().fromJson(req.body(), Ingredient.class);
+            ingredientDataMapper.updateIngredient(ingredient);
+
+            return gson.toJson(new StandardResponse(StatusResponse.SUCCESS));
+        });
+
         delete("ingredients/:ingredientId", (req, res) -> {
             res.type("application/json");
             String ingredientIdStr = req.params(":ingredientId");
