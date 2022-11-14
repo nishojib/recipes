@@ -103,9 +103,9 @@ public class IngredientGateway {
         try {
             conn = connect("recipes.sqlite");
 
-            String sqlForCreatingIngredients = "UPDATE ingredients SET name = ?, amount = ?, unit = ?, original = ? WHERE id = ?";
+            String sqlForUpdatingIngredients = "UPDATE ingredients SET name = ?, amount = ?, unit = ?, original = ? WHERE id = ?";
 
-            PreparedStatement pstmt = conn.prepareStatement(sqlForCreatingIngredients, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement pstmt = conn.prepareStatement(sqlForUpdatingIngredients, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, ingredient.getName());
             pstmt.setFloat(2, ingredient.getAmount());
             pstmt.setString(3, ingredient.getUnit());

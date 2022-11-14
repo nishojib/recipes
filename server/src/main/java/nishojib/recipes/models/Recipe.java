@@ -1,8 +1,11 @@
 package nishojib.recipes.models;
 
 public class Recipe {
-    private int id;
 
+    public int getId()  {
+        return id;
+    }
+    
     public String getTitle() {
         return title;
     }
@@ -43,6 +46,7 @@ public class Recipe {
         return summary;
     }
 
+    private int id;
     private String title;
     private String image;
     private int servings;

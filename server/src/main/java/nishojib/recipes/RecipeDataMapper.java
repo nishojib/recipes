@@ -80,4 +80,12 @@ public class RecipeDataMapper {
             throw new DataMapperException("Error occurred creating recipe in data source");
         }
     }
+
+    public void updateRecipe(Recipe recipe) throws DataMapperException {
+        try {
+            recipeGateway.updateRecipe(recipe);
+        } catch (GatewayException e) {
+            throw new DataMapperException("Error occurred updating recipe in data source");
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package nishojib.recipes;
 
 import nishojib.core.exceptions.GatewayException;
+import nishojib.recipes.models.Recipe;
 import nishojib.recipes.models.RecipeDTO;
 
 import java.sql.*;
@@ -120,6 +121,44 @@ public class RecipeGateway {
                 throw new GatewayException("Error rolling back");
             }
             throw new GatewayException("Error occurred creating recipe in data source");
+        }
+    }
+
+    public void updateRecipe(Recipe recipe) throws GatewayException {
+        Connection conn = null;
+
+        try {
+            conn = connect("recipes.sqlite");
+
+            String sqlForUpdatingRecipes = "UPDATE recipes SET title = ?, image = ?, servings = ?, healthScore = ?, cheap = ?, glutenFree = ?, dairyFree = ?, readyInMinutes = ?, instructions = ?, summary = ? WHERE id = ?";
+
+            PreparedStatement pstmt = conn.prepareStatement(sqlForUpdatingRecipes, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, recipe.getTitle());
+            pstmt.setString(2, recipe.getImage());
+            pstmt.setInt(3, recipe.getServings());
+            pstmt.setInt(4, recipe.getHealthScore());
+            pstmt.setBoolean(5, recipe.isCheap());
+            pstmt.setBoolean(6, recipe.isGlutenFree());
+            pstmt.setBoolean(7, recipe.isDairyFree());
+            pstmt.setInt(8, recipe.getReadyInMinutes());
+            pstmt.setString(9, recipe.getInstructions());
+            pstmt.setString(10, recipe.getSummary());
+            pstmt.setInt(11, recipe.getId());
+
+            int rowAffected = pstmt.executeUpdate();
+
+            if (rowAffected != 1)   {
+                conn.rollback();
+            }
+
+            pstmt.close();
+        } catch (SQLException e1)    {
+            try {
+                if (conn != null)   conn.rollback();
+            } catch (SQLException e2)   {
+                throw new GatewayException("Error rolling back");
+            }
+            throw new GatewayException("Error occured updating recipes in data source");
         }
     }
 }
