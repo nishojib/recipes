@@ -7,6 +7,7 @@ import nishojib.core.models.StandardResponse;
 import nishojib.core.models.StatusResponse;
 import nishojib.recipes.models.DeletedRecipe;
 import nishojib.recipes.models.Recipe;
+import nishojib.recipes.models.RecipeDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,14 @@ public class RecipeController {
             }
 
             return gson.toJson(new StandardResponse(StatusResponse.SUCCESS, gson.toJsonTree(recipes)));
+        });
+
+        post("recipes", (req, res) -> {
+            res.type("application/json");
+            RecipeDTO recipe = new Gson().fromJson(req.body(), RecipeDTO.class);
+            recipeDataMapper.create(recipe);
+
+            return gson.toJson(new StandardResponse(StatusResponse.SUCCESS));
         });
 
         delete("recipes/:recipeId", (req, res) -> {
