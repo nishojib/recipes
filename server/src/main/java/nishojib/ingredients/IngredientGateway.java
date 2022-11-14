@@ -1,4 +1,4 @@
-package nishojib;
+package nishojib.ingredients;
 
 import java.sql.*;
 

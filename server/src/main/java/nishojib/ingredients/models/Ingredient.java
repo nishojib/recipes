@@ -1,4 +1,4 @@
-package nishojib;
+package nishojib.ingredients.models;
 public class Ingredient {
     private int id;
     private String name;

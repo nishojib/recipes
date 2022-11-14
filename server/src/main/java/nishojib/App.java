@@ -1,5 +1,6 @@
 package nishojib;
 
+import nishojib.ingredients.IngredientController;
 import nishojib.recipes.RecipeController;
 
 public class App {

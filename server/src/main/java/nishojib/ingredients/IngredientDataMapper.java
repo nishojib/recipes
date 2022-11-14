@@ -1,4 +1,6 @@
-package nishojib;
+package nishojib.ingredients;
+
+import nishojib.ingredients.models.Ingredient;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
