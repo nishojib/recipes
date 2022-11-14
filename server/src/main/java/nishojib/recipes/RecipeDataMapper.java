@@ -81,9 +81,9 @@ public class RecipeDataMapper {
         }
     }
 
-    public void updateRecipe(Recipe recipe) throws DataMapperException {
+    public void update(int recipeId, RecipeDTO recipe) throws DataMapperException {
         try {
-            recipeGateway.updateRecipe(recipe);
+            recipeGateway.update(recipeId, recipe);
         } catch (GatewayException e) {
             throw new DataMapperException("Error occurred updating recipe in data source");
         }

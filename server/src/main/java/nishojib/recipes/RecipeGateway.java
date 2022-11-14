@@ -1,7 +1,6 @@
 package nishojib.recipes;
 
 import nishojib.core.exceptions.GatewayException;
-import nishojib.recipes.models.Recipe;
 import nishojib.recipes.models.RecipeDTO;
 
 import java.sql.*;
@@ -101,7 +100,7 @@ public class RecipeGateway {
             }
 
             PreparedStatement pstmt2 = null;
-            for (int ingredientId: recipe.getIngredientIds()) {
+            for (int ingredientId : recipe.getIngredientIds()) {
                 pstmt2 = conn.prepareStatement(sqlForCreatingRecipeAndIngredients);
                 pstmt2.setInt(1, recipeId);
                 pstmt2.setInt(2, ingredientId);
@@ -111,9 +110,7 @@ public class RecipeGateway {
             conn.commit();
 
             pstmt1.close();
-            if (pstmt2 != null) {
-                pstmt2.close();
-            }
+            if (pstmt2 != null) pstmt2.close();
         } catch (SQLException e1) {
             try {
                 if (conn != null) conn.rollback();
@@ -124,41 +121,60 @@ public class RecipeGateway {
         }
     }
 
-    public void updateRecipe(Recipe recipe) throws GatewayException {
+    public void update(int recipeId, RecipeDTO recipe) throws GatewayException {
         Connection conn = null;
 
         try {
             conn = connect("recipes.sqlite");
 
+            conn.setAutoCommit(false);
+
             String sqlForUpdatingRecipes = "UPDATE recipes SET title = ?, image = ?, servings = ?, healthScore = ?, cheap = ?, glutenFree = ?, dairyFree = ?, readyInMinutes = ?, instructions = ?, summary = ? WHERE id = ?";
+            String sqlForDeletingRecipeIngredients = "DELETE FROM recipes_ingredients WHERE recipeId=" + recipeId;
+            String sqlForCreatingRecipeAndIngredients = "INSERT INTO recipes_ingredients (recipeId, ingredientId) VALUES (?, ?)";
 
-            PreparedStatement pstmt = conn.prepareStatement(sqlForUpdatingRecipes, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, recipe.getTitle());
-            pstmt.setString(2, recipe.getImage());
-            pstmt.setInt(3, recipe.getServings());
-            pstmt.setInt(4, recipe.getHealthScore());
-            pstmt.setBoolean(5, recipe.isCheap());
-            pstmt.setBoolean(6, recipe.isGlutenFree());
-            pstmt.setBoolean(7, recipe.isDairyFree());
-            pstmt.setInt(8, recipe.getReadyInMinutes());
-            pstmt.setString(9, recipe.getInstructions());
-            pstmt.setString(10, recipe.getSummary());
-            pstmt.setInt(11, recipe.getId());
+            PreparedStatement pstmt1 = conn.prepareStatement(sqlForUpdatingRecipes);
+            pstmt1.setString(1, recipe.getTitle());
+            pstmt1.setString(2, recipe.getImage());
+            pstmt1.setInt(3, recipe.getServings());
+            pstmt1.setInt(4, recipe.getHealthScore());
+            pstmt1.setBoolean(5, recipe.isCheap());
+            pstmt1.setBoolean(6, recipe.isGlutenFree());
+            pstmt1.setBoolean(7, recipe.isDairyFree());
+            pstmt1.setInt(8, recipe.getReadyInMinutes());
+            pstmt1.setString(9, recipe.getInstructions());
+            pstmt1.setString(10, recipe.getSummary());
+            pstmt1.setInt(11, recipeId);
 
-            int rowAffected = pstmt.executeUpdate();
+            int rowAffected = pstmt1.executeUpdate();
 
-            if (rowAffected != 1)   {
+            if (rowAffected != 1) {
                 conn.rollback();
             }
 
-            pstmt.close();
-        } catch (SQLException e1)    {
+            PreparedStatement pstmt2 = conn.prepareStatement(sqlForDeletingRecipeIngredients);
+            pstmt2.executeUpdate();
+
+            PreparedStatement pstmt3 = null;
+            for (int ingredientId : recipe.getIngredientIds()) {
+                pstmt3 = conn.prepareStatement(sqlForCreatingRecipeAndIngredients);
+                pstmt3.setInt(1, recipeId);
+                pstmt3.setInt(2, ingredientId);
+                pstmt3.executeUpdate();
+            }
+
+            conn.commit();
+
+            pstmt1.close();
+            pstmt2.close();
+            if (pstmt3 != null) pstmt3.close();
+        } catch (SQLException e1) {
             try {
-                if (conn != null)   conn.rollback();
-            } catch (SQLException e2)   {
+                if (conn != null) conn.rollback();
+            } catch (SQLException e2) {
                 throw new GatewayException("Error rolling back");
             }
-            throw new GatewayException("Error occured updating recipes in data source");
+            throw new GatewayException("Error occurred updating recipes in data source");
         }
     }
 }

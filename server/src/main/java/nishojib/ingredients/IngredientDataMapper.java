@@ -64,9 +64,9 @@ public class IngredientDataMapper {
         }
     }
 
-    public synchronized void updateIngredient(Ingredient ingredient) throws DataMapperException {
+    public synchronized void update(int ingredientId, IngredientDTO ingredient) throws DataMapperException {
         try {
-            ingredientGateway.updateIngredient(ingredient);
+            ingredientGateway.update(ingredientId, ingredient);
         } catch (GatewayException e)    {
             throw new DataMapperException("Error occured updating ingredient in data source");
 

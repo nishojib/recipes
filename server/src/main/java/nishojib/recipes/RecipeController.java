@@ -65,10 +65,13 @@ public class RecipeController {
             return gson.toJson(new StandardResponse(StatusResponse.SUCCESS));
         });
 
-        put("recipes", (req, res) -> {
+        put("recipes/:recipeId", (req, res) -> {
             res.type("application/json");
-            Recipe recipe = new Gson().fromJson(req.body(), Recipe.class);
-            recipeDataMapper.updateRecipe(recipe);
+            String recipeIdStr = req.params(":recipeId");
+            int recipeId = Integer.parseInt(recipeIdStr);
+
+            RecipeDTO recipe = new Gson().fromJson(req.body(), RecipeDTO.class);
+            recipeDataMapper.update(recipeId, recipe);
 
             return gson.toJson(new StandardResponse(StatusResponse.SUCCESS));
         });
