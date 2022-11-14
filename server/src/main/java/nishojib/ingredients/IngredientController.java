@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import nishojib.core.exceptions.DataMapperException;
-import nishojib.core.models.ErrorResult;
-import nishojib.core.models.Result;
+import nishojib.core.models.StandardResponse;
+import nishojib.core.models.StatusResponse;
 import nishojib.ingredients.models.DeletedIngredient;
 import nishojib.ingredients.models.Ingredient;
 
@@ -65,14 +65,13 @@ public class IngredientController {
                     DeletedIngredient ingredient = new DeletedIngredient(ingredientId);
                     ingredients.add(ingredient);
                 } else {
-                    return gson.toJson(new ErrorResult("Unable to delete ingredient with id: " + ingredientId));
+                    return gson.toJson(new StandardResponse(StatusResponse.ERROR, "Unable to delete ingredient with id: " + ingredientId));
                 }
             } catch (DataMapperException e) {
-                return gson.toJson(new ErrorResult(e.getMessage()));
+                return gson.toJson(new StandardResponse(StatusResponse.ERROR, e.getMessage()));
             }
 
-            Result<DeletedIngredient> result = new Result<>(ingredients);
-            return gson.toJson(result);
+            return gson.toJson(new StandardResponse(StatusResponse.SUCCESS, gson.toJsonTree(ingredients)));
         });
 
     }
