@@ -1,5 +1,7 @@
 package nishojib.ingredients;
 
+import nishojib.core.exceptions.GatewayException;
+
 import java.sql.*;
 
 public class IngredientGateway {

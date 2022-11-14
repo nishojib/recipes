@@ -47,15 +47,14 @@ public class RecipeDataMapper {
         }
     }
 
-//    public synchronized boolean deleteById(int recipeId) throws DataMapperException {
-//        try {
-//            recipeGateway.deleteById(recipeId);
-//            return true;
-//        } catch (GatewayException e) {
-//            throw new DataMapperException("Error occurred reading recipes from data source");
-//        }
-//    }
-
+    public synchronized boolean deleteById(int recipeId) throws DataMapperException {
+        try {
+            recipeGateway.deleteById(recipeId);
+            return true;
+        } catch (GatewayException e) {
+            throw new DataMapperException("Error occurred reading recipes from data source");
+        }
+    }
 
     public static Recipe getRecipeFromResultSet(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");

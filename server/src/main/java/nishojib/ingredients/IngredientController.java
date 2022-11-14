@@ -2,6 +2,7 @@ package nishojib.ingredients;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import nishojib.core.exceptions.DataMapperException;
 import nishojib.ingredients.models.Ingredient;
 
 import java.util.List;

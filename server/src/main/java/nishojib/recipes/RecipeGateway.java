@@ -34,47 +34,34 @@ public class RecipeGateway {
         }
     }
 
-//    public void deleteById(int recipeId) throws GatewayException {
-//        Connection conn = null;
-//        PreparedStatement pstmt1 = null;
-//        PreparedStatement pstmt2 = null;
-//
-//        try {
-//            conn = connect("recipes.sqlite");
-//            conn.setAutoCommit(false);
-//
-//            String sqlForDeletingRecipeIngredients = "DELETE FROM recipes_ingredients WHERE recipeId=" + recipeId;
-//            String sqlForDeletingRecipe = "DELETE FROM recipes WHERE id=" + recipeId;
-//
-//            pstmt1 = conn.prepareStatement(sqlForDeletingRecipeIngredients);
-//            pstmt1.executeUpdate();
-//
-//            pstmt2 = conn.prepareStatement(sqlForDeletingRecipe);
-//            pstmt2.executeUpdate();
-//
-//            conn.commit();
-//        } catch (SQLException e1) {
-//            try {
-//                if (conn != null) conn.rollback();
-//            } catch (SQLException e2) {
-//                throw new GatewayException("Error rolling back.");
-//            }
-//            throw new GatewayException("Error occurred deleting recipe from data source.");
-//        } finally {
-//            try {
-//                if (pstmt1 != null) {
-//                    pstmt1.close();
-//                }
-//                if (pstmt2 != null) {
-//                    pstmt2.close();
-//                }
-//                if (conn != null) {
-//                    conn.close();
-//                }
-//            } catch (SQLException e3) {
-//                throw new GatewayException("Error closing connection.");
-//            }
-//        }
-//    }
+    public void deleteById(int recipeId) throws GatewayException {
+        Connection conn = null;
+
+        try {
+            conn = connect("recipes.sqlite");
+            conn.setAutoCommit(false);
+
+            String sqlForDeletingRecipeIngredients = "DELETE FROM recipes_ingredients WHERE recipeId=" + recipeId;
+            String sqlForDeletingRecipe = "DELETE FROM recipes WHERE id=" + recipeId;
+
+            PreparedStatement pstmt1 = conn.prepareStatement(sqlForDeletingRecipeIngredients);
+            pstmt1.executeUpdate();
+
+            PreparedStatement pstmt2 = conn.prepareStatement(sqlForDeletingRecipe);
+            pstmt2.executeUpdate();
+
+            conn.commit();
+
+            pstmt1.close();
+            pstmt2.close();
+        } catch (SQLException e1) {
+            try {
+                if (conn != null) conn.rollback();
+            } catch (SQLException e2) {
+                throw new GatewayException("Error rolling back.");
+            }
+            throw new GatewayException("Error occurred deleting recipe from data source.");
+        }
+    }
 
 }

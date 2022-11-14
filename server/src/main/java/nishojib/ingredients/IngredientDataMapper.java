@@ -1,5 +1,7 @@
 package nishojib.ingredients;
 
+import nishojib.core.exceptions.DataMapperException;
+import nishojib.core.exceptions.GatewayException;
 import nishojib.ingredients.models.Ingredient;
 
 import java.sql.ResultSet;

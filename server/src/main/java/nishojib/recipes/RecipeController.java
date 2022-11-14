@@ -57,26 +57,26 @@ public class RecipeController {
             return gson.toJson(result);
         });
 
-//        delete("recipes/:recipeId", (req, res) -> {
-//            res.type("application/json");
-//            String recipeIdStr = req.params(":recipeId");
-//            int recipeId = Integer.parseInt(recipeIdStr);
-//            List<DeletedRecipe> recipes = new ArrayList<>();
-//
-//            try {
-//                boolean deleted = recipeDataMapper.deleteById(recipeId);
-//                if (deleted) {
-//                    DeletedRecipe recipe = new DeletedRecipe(recipeId);
-//                    recipes.add(recipe);
-//                } else {
-//                    return gson.toJson(new ErrorResult("Unable to delete recipe with id: " + recipeId));
-//                }
-//            } catch (DataMapperException e) {
-//                return gson.toJson(new ErrorResult(e.getMessage()));
-//            }
-//
-//            Result<DeletedRecipe> result = new Result<>(recipes);
-//            return gson.toJson(result);
-//        });
+        delete("recipes/:recipeId", (req, res) -> {
+            res.type("application/json");
+            String recipeIdStr = req.params(":recipeId");
+            int recipeId = Integer.parseInt(recipeIdStr);
+            List<DeletedRecipe> recipes = new ArrayList<>();
+
+            try {
+                boolean deleted = recipeDataMapper.deleteById(recipeId);
+                if (deleted) {
+                    DeletedRecipe recipe = new DeletedRecipe(recipeId);
+                    recipes.add(recipe);
+                } else {
+                    return gson.toJson(new ErrorResult("Unable to delete recipe with id: " + recipeId));
+                }
+            } catch (DataMapperException e) {
+                return gson.toJson(new ErrorResult(e.getMessage()));
+            }
+
+            Result<DeletedRecipe> result = new Result<>(recipes);
+            return gson.toJson(result);
+        });
     }
 }
