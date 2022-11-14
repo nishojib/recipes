@@ -3,16 +3,16 @@ package nishojib.recipes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import nishojib.core.exceptions.DataMapperException;
-import nishojib.core.models.ErrorResult;
+import nishojib.core.models.StandardResponse;
+import nishojib.core.models.StatusResponse;
 import nishojib.recipes.models.DeletedRecipe;
 import nishojib.recipes.models.Recipe;
-import nishojib.core.models.Result;
+import nishojib.recipes.models.RecipeDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static spark.Spark.delete;
-import static spark.Spark.get;
+import static spark.Spark.*;
 
 public class RecipeController {
     RecipeDataMapper recipeDataMapper;
@@ -34,13 +34,14 @@ public class RecipeController {
 
             try {
                 Recipe recipe = recipeDataMapper.findOneById(recipeId);
-                recipes.add(recipe);
+                if (recipe != null) {
+                    recipes.add(recipe);
+                }
             } catch (DataMapperException e) {
-                return gson.toJson(new ErrorResult(e.getMessage()));
+                return gson.toJson(new StandardResponse(StatusResponse.ERROR, e.getMessage()));
             }
 
-            Result<Recipe> result = new Result<>(recipes);
-            return gson.toJson(result);
+            return gson.toJson(new StandardResponse(StatusResponse.SUCCESS, gson.toJsonTree(recipes)));
         });
 
         get("/recipes", (req, res) -> {
@@ -50,11 +51,18 @@ public class RecipeController {
             try {
                 recipes = recipeDataMapper.findAll();
             } catch (DataMapperException e) {
-                return gson.toJson(new ErrorResult(e.getMessage()));
+                return gson.toJson(new StandardResponse(StatusResponse.ERROR, e.getMessage()));
             }
 
-            Result<Recipe> result = new Result<>(recipes);
-            return gson.toJson(result);
+            return gson.toJson(new StandardResponse(StatusResponse.SUCCESS, gson.toJsonTree(recipes)));
+        });
+
+        post("recipes", (req, res) -> {
+            res.type("application/json");
+            RecipeDTO recipe = new Gson().fromJson(req.body(), RecipeDTO.class);
+            recipeDataMapper.create(recipe);
+
+            return gson.toJson(new StandardResponse(StatusResponse.SUCCESS));
         });
 
         delete("recipes/:recipeId", (req, res) -> {
@@ -69,14 +77,13 @@ public class RecipeController {
                     DeletedRecipe recipe = new DeletedRecipe(recipeId);
                     recipes.add(recipe);
                 } else {
-                    return gson.toJson(new ErrorResult("Unable to delete recipe with id: " + recipeId));
+                    return gson.toJson(new StandardResponse(StatusResponse.ERROR, "Unable to delete recipe with id: " + recipeId));
                 }
             } catch (DataMapperException e) {
-                return gson.toJson(new ErrorResult(e.getMessage()));
+                return gson.toJson(new StandardResponse(StatusResponse.ERROR, e.getMessage()));
             }
 
-            Result<DeletedRecipe> result = new Result<>(recipes);
-            return gson.toJson(result);
+            return gson.toJson(new StandardResponse(StatusResponse.SUCCESS, gson.toJsonTree(recipes)));
         });
     }
 }

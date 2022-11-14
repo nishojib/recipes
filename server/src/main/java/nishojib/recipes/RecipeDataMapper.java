@@ -3,6 +3,7 @@ package nishojib.recipes;
 import nishojib.recipes.models.Recipe;
 import nishojib.core.exceptions.DataMapperException;
 import nishojib.core.exceptions.GatewayException;
+import nishojib.recipes.models.RecipeDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -72,4 +73,11 @@ public class RecipeDataMapper {
         return new Recipe(id, title, image, servings, healthScore, cheap, glutenFree, dairyFree, readyInMinutes, instructions, summary);
     }
 
+    public void create(RecipeDTO recipe) throws DataMapperException {
+        try {
+            recipeGateway.create(recipe);
+        } catch (GatewayException e) {
+            throw new DataMapperException("Error occurred reading recipes from data source");
+        }
+    }
 }

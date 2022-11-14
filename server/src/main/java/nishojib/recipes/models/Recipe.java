@@ -2,6 +2,47 @@ package nishojib.recipes.models;
 
 public class Recipe {
     private int id;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public int getServings() {
+        return servings;
+    }
+
+    public int getHealthScore() {
+        return healthScore;
+    }
+
+    public boolean isCheap() {
+        return cheap;
+    }
+
+    public boolean isGlutenFree() {
+        return glutenFree;
+    }
+
+    public boolean isDairyFree() {
+        return dairyFree;
+    }
+
+    public int getReadyInMinutes() {
+        return readyInMinutes;
+    }
+
+    public String getInstructions() {
+        return instructions;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
     private String title;
     private String image;
     private int servings;
