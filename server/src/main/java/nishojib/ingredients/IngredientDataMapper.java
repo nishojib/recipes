@@ -46,6 +46,15 @@ public class IngredientDataMapper {
         }
     }
 
+    public synchronized boolean deleteById(int ingredientId) throws DataMapperException {
+        try {
+            ingredientGateway.deleteById(ingredientId);
+            return true;
+        } catch (GatewayException e) {
+            throw new DataMapperException("Error occurred deleting ingredients from data source");
+        }
+    }
+
     public static Ingredient getIngredientFromResultSet(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         String name = rs.getString("name");
