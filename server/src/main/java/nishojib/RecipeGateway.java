@@ -13,6 +13,7 @@ public class RecipeGateway {
             String sql = "SELECT * FROM recipes";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
+            conn.close();
             return rs;
         } catch (SQLException e) {
             throw new GatewayException("Error occurred reading recipes from data source");
@@ -26,9 +27,11 @@ public class RecipeGateway {
             String sql = "SELECT * FROM recipes WHERE id=" + recipeId;
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
+            conn.close();
             return rs;
         } catch (SQLException e) {
             throw new GatewayException("Error occurred reading recipes from data source");
         }
     }
+
 }
