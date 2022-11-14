@@ -17,6 +17,18 @@ public class RecipeGateway {
         } catch (SQLException e) {
             throw new GatewayException("Error occurred reading recipes from data source");
         }
+    }
 
+    public static ResultSet findOneById(int recipeId) throws GatewayException {
+        try {
+            Connect connection = new Connect();
+            Connection conn = connection.connect("recipes.sqlite");
+            String sql = "SELECT * FROM recipes WHERE id=" + recipeId;
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            return rs;
+        } catch (SQLException e) {
+            throw new GatewayException("Error occurred reading recipes from data source");
+        }
     }
 }
