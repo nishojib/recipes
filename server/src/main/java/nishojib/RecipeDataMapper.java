@@ -6,9 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeDataMapper {
-    public synchronized static List<Recipe> findAll() throws DataMapperException {
+    RecipeGateway recipeGateway;
+
+    public RecipeDataMapper() {
+        recipeGateway = new RecipeGateway();
+    }
+
+    public synchronized List<Recipe> findAll() throws DataMapperException {
         try {
-            ResultSet rs = RecipeGateway.findAll();
+            ResultSet rs = recipeGateway.findAll();
             ArrayList<Recipe> recipes = new ArrayList<>();
 
             while (rs.next()) {
@@ -18,14 +24,14 @@ public class RecipeDataMapper {
 
             return recipes;
         } catch (GatewayException | SQLException e) {
+            System.out.println(e.getMessage());
             throw new DataMapperException("Error occurred reading recipes from data source");
         }
-
     }
 
-    public static Recipe findOneById(int recipeId) throws DataMapperException {
+    public synchronized Recipe findOneById(int recipeId) throws DataMapperException {
         try {
-            ResultSet rs = RecipeGateway.findOneById(recipeId);
+            ResultSet rs = recipeGateway.findOneById(recipeId);
 
             while (rs.next()) {
                 return getRecipeFromResultSet(rs);
@@ -33,9 +39,19 @@ public class RecipeDataMapper {
 
             return null;
         } catch (GatewayException | SQLException e) {
+            throw new DataMapperException("Error occurred reading recipe from data source");
+        }
+    }
+
+    public synchronized boolean deleteById(int recipeId) throws DataMapperException {
+        try {
+            recipeGateway.deleteById(recipeId);
+            return true;
+        } catch (GatewayException e) {
             throw new DataMapperException("Error occurred reading recipes from data source");
         }
     }
+
 
     public static Recipe getRecipeFromResultSet(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
@@ -52,4 +68,5 @@ public class RecipeDataMapper {
 
         return new Recipe(id, title, image, servings, healthScore, cheap, glutenFree, dairyFree, readyInMinutes, instructions, summary);
     }
+
 }
