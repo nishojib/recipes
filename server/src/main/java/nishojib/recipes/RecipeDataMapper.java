@@ -1,4 +1,9 @@
-package nishojib;
+package nishojib.mappers;
+
+import nishojib.models.Recipe;
+import nishojib.tdg.RecipeGateway;
+import nishojib.exceptions.DataMapperException;
+import nishojib.exceptions.GatewayException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

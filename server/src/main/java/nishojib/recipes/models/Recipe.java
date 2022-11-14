@@ -1,4 +1,4 @@
-package nishojib;
+package nishojib.models;
 
 public class Recipe {
     private int id;
