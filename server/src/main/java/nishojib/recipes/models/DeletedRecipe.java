@@ -1,4 +1,4 @@
-package nishojib.models;
+package nishojib.recipes.models;
 
 public class DeletedRecipe {
     private int id;

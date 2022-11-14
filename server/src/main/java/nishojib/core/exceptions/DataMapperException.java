@@ -1,4 +1,4 @@
-package nishojib.exceptions;
+package nishojib.core.exceptions;
 
 public class DataMapperException extends Exception {
     public DataMapperException(String message) {

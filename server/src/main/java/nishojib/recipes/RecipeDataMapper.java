@@ -1,9 +1,8 @@
-package nishojib.mappers;
+package nishojib.recipes;
 
-import nishojib.models.Recipe;
-import nishojib.tdg.RecipeGateway;
-import nishojib.exceptions.DataMapperException;
-import nishojib.exceptions.GatewayException;
+import nishojib.recipes.models.Recipe;
+import nishojib.core.exceptions.DataMapperException;
+import nishojib.core.exceptions.GatewayException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,14 +47,14 @@ public class RecipeDataMapper {
         }
     }
 
-    public synchronized boolean deleteById(int recipeId) throws DataMapperException {
-        try {
-            recipeGateway.deleteById(recipeId);
-            return true;
-        } catch (GatewayException e) {
-            throw new DataMapperException("Error occurred reading recipes from data source");
-        }
-    }
+//    public synchronized boolean deleteById(int recipeId) throws DataMapperException {
+//        try {
+//            recipeGateway.deleteById(recipeId);
+//            return true;
+//        } catch (GatewayException e) {
+//            throw new DataMapperException("Error occurred reading recipes from data source");
+//        }
+//    }
 
 
     public static Recipe getRecipeFromResultSet(ResultSet rs) throws SQLException {

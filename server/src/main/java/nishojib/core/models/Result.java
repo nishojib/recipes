@@ -1,4 +1,4 @@
-package nishojib.models;
+package nishojib.core.models;
 
 import java.util.List;
 
