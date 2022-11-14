@@ -31,7 +31,7 @@ public class IngredientGateway {
             ResultSet rs = stmt.executeQuery(sql);
             return rs;
         } catch (SQLException e) {
-            throw new GatewayException("Error occurred reading ingredients from data source");
+            throw new GatewayException("Error occurred reading ingredient from data source");
         }
     }
 
@@ -61,7 +61,7 @@ public class IngredientGateway {
             } catch (SQLException e2) {
                 throw new GatewayException("Error rolling back");
             }
-            throw new GatewayException("Error occurred deleting ingredients from data source");
+            throw new GatewayException("Error occurred deleting ingredient from data source");
         }
     }
 

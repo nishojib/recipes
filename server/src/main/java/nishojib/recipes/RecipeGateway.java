@@ -1,7 +1,6 @@
 package nishojib.recipes;
 
 import nishojib.core.exceptions.GatewayException;
-import nishojib.recipes.models.Recipe;
 import nishojib.recipes.models.RecipeDTO;
 
 import java.sql.*;
@@ -32,7 +31,7 @@ public class RecipeGateway {
             ResultSet rs = stmt.executeQuery(sql);
             return rs;
         } catch (SQLException e) {
-            throw new GatewayException("Error occurred reading recipes from data source");
+            throw new GatewayException("Error occurred reading recipe from data source");
         }
     }
 
@@ -60,9 +59,9 @@ public class RecipeGateway {
             try {
                 if (conn != null) conn.rollback();
             } catch (SQLException e2) {
-                throw new GatewayException("Error rolling back.");
+                throw new GatewayException("Error rolling back");
             }
-            throw new GatewayException("Error occurred deleting recipe from data source.");
+            throw new GatewayException("Error occurred deleting recipe from data source");
         }
     }
 
@@ -118,9 +117,9 @@ public class RecipeGateway {
             try {
                 if (conn != null) conn.rollback();
             } catch (SQLException e2) {
-                throw new GatewayException("Error rolling back.");
+                throw new GatewayException("Error rolling back");
             }
-            throw new GatewayException("Error occurred deleting recipe from data source.");
+            throw new GatewayException("Error occurred creating recipe in data source");
         }
     }
 }

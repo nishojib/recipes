@@ -43,7 +43,7 @@ public class IngredientDataMapper {
 
             return null;
         } catch (GatewayException | SQLException e) {
-            throw new DataMapperException("Error occurred reading ingredients from data source");
+            throw new DataMapperException("Error occurred reading ingredient from data source");
         }
     }
 
@@ -52,7 +52,7 @@ public class IngredientDataMapper {
             ingredientGateway.deleteById(ingredientId);
             return true;
         } catch (GatewayException e) {
-            throw new DataMapperException("Error occurred deleting ingredients from data source");
+            throw new DataMapperException("Error occurred deleting ingredient from data source");
         }
     }
 
