@@ -5,8 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Connect {
-    public Connection connect() {
-        String url = "jdbc:sqlite:db/chinook.db";
+    public Connection connect(String dbUrl) {
+        String url = "jdbc:sqlite:db/" + dbUrl;
         Connection conn = null;
 
         try {
