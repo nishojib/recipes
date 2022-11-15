@@ -10,14 +10,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Data Mapper for the Ingredient
+ */
 public class IngredientDataMapper {
+    /**
+     * Access to the ingredient table data gateway
+     */
     IngredientGateway ingredientGateway;
 
+    /**
+     * The initializer for the ingredient data mapper
+     */
     public IngredientDataMapper() {
         ingredientGateway = new IngredientGateway();
     }
 
-    public static Ingredient getIngredientFromResultSet(ResultSet rs) throws SQLException {
+    public Ingredient getIngredientFromResultSet(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         String name = rs.getString("name");
         float amount = rs.getFloat("amount");
@@ -27,6 +36,11 @@ public class IngredientDataMapper {
         return new Ingredient(id, name, amount, unit, original);
     }
 
+    /**
+     * The method that finds and returns all ingredients
+     * @return A List of Ingredient objects
+     * @throws DataMapperException
+     */
     public synchronized List<Ingredient> findAll() throws DataMapperException {
         try {
             ResultSet rs = ingredientGateway.findAll();
@@ -41,9 +55,14 @@ public class IngredientDataMapper {
         } catch (GatewayException | SQLException e) {
             throw new DataMapperException("Error occurred reading ingredients from data source");
         }
-
     }
 
+    /**
+     * The method that finds and returns one ingredient by id
+     * @param ingredientId The ingredient id of the ingredient
+     * @return An Ingredient Object that was found using the ingredient id
+     * @throws DataMapperException
+     */
     public synchronized Ingredient findOneById(int ingredientId) throws DataMapperException {
         try {
             ResultSet rs = ingredientGateway.findOneById(ingredientId);
@@ -58,6 +77,12 @@ public class IngredientDataMapper {
         }
     }
 
+    /**
+     * The method that finds and deletes one ingredient by id
+     * @param ingredientId The ingredient id of the ingredient
+     * @return {true} if an ingredient is deleted, {false} otherwise
+     * @throws DataMapperException
+     */
     public synchronized boolean deleteById(int ingredientId) throws DataMapperException {
         try {
             ingredientGateway.deleteById(ingredientId);
@@ -67,20 +92,31 @@ public class IngredientDataMapper {
         }
     }
 
-    public synchronized int create(IngredientDTO ingredientDTO) throws DataMapperException {
+    /**
+     * The method that creates an ingredient
+     * @param ingredient The ingredient data transfer object
+     * @throws DataMapperException
+     */
+    public synchronized int create(IngredientDTO ingredient) throws DataMapperException {
         try {
-            int createdId = ingredientGateway.create(ingredientDTO);
+            int createdId = ingredientGateway.create(ingredient);
             return createdId;
         } catch (GatewayException e) {
-            throw new DataMapperException("Error occured creating ingredient in data source");
+            throw new DataMapperException("Error occurred creating ingredient in data source");
         }
     }
 
+    /**
+     * The method that updates an ingredient based on a ingredientId
+     * @param ingredientId The id of the ingredient
+     * @param ingredient The ingredient data transfer object
+     * @throws DataMapperException
+     */
     public synchronized void update(int ingredientId, IngredientDTO ingredient) throws DataMapperException {
         try {
             ingredientGateway.update(ingredientId, ingredient);
         } catch (GatewayException e) {
-            throw new DataMapperException("Error occured updating ingredient in data source");
+            throw new DataMapperException("Error occurred updating ingredient in data source");
 
         }
     }

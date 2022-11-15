@@ -75,7 +75,7 @@ public class RecipeGateway {
     }
 
     /**
-     * The method that deletes a recipes from the SQL table by recipe id
+     * The method that deletes a recipe from the SQL table by recipe id
      * and its corresponding ingredients ids
      * @param recipeId The id of the recipe
      * @throws GatewayException

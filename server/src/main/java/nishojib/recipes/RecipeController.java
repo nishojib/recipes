@@ -19,8 +19,14 @@ import static spark.Spark.*;
  * The Recipe Controller class that gives access to all recipe based rest end points
  */
 public class RecipeController {
+    /**
+     * The access to the recipe data mapper
+     */
     RecipeDataMapper recipeDataMapper;
 
+    /**
+     * The initializer for the recipe controller
+     */
     public RecipeController() {
         this.recipeDataMapper = new RecipeDataMapper();
     }

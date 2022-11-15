@@ -15,18 +15,31 @@ import java.util.List;
 
 import static spark.Spark.*;
 
+/**
+ * The Ingredient Controller class that gives access to all ingredient based rest end points
+ */
 public class IngredientController {
+    /**
+     * The access to the ingredient data mapper
+     */
     IngredientDataMapper ingredientDataMapper;
 
+    /**
+     * The initializer for the ingredient controller
+     */
     public IngredientController() {
         this.ingredientDataMapper = new IngredientDataMapper();
     }
 
+    /**
+     * The run method that initializes all rest end points for Ingredients
+     */
     public void run() {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         builder.setPrettyPrinting();
 
+        // The get method that gets all ingredients
         get("ingredients", (req, res) -> {
             res.type("application/json");
 
@@ -39,6 +52,7 @@ public class IngredientController {
             }
         });
 
+        // The get method that gets one ingredient
         get("ingredients/:ingredientId", (req, res) -> {
             res.type("application/json");
             String ingredientIdStr = req.params(":ingredientId");
@@ -53,6 +67,7 @@ public class IngredientController {
             }
         });
 
+        // The post method that creates one ingredient
         post("ingredients", (req, res) -> {
             res.type("application/json");
             IngredientDTO ingredient = new Gson().fromJson(req.body(), IngredientDTO.class);
@@ -61,6 +76,7 @@ public class IngredientController {
             return gson.toJson(new StandardResponse(StatusResponse.SUCCESS, Integer.toString(createdId)));
         });
 
+        // The put method that updates one ingredient
         put("ingredients/:ingredientId", (req, res) -> {
             res.type("application/json");
             String ingredientIdStr = req.params(":ingredientId");
@@ -72,6 +88,7 @@ public class IngredientController {
             return gson.toJson(new StandardResponse(StatusResponse.SUCCESS));
         });
 
+        // The delete method that deletes an ingredient
         delete("ingredients/:ingredientId", (req, res) -> {
             res.type("application/json");
             String ingredientIdStr = req.params(":ingredientId");
