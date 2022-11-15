@@ -67,9 +67,10 @@ public class IngredientDataMapper {
         }
     }
 
-    public synchronized void create(IngredientDTO ingredientDTO) throws DataMapperException {
+    public synchronized int create(IngredientDTO ingredientDTO) throws DataMapperException {
         try {
-            ingredientGateway.create(ingredientDTO);
+            int createdId = ingredientGateway.create(ingredientDTO);
+            return createdId;
         } catch (GatewayException e) {
             throw new DataMapperException("Error occured creating ingredient in data source");
         }

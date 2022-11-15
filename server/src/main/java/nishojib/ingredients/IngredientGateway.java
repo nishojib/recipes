@@ -65,7 +65,7 @@ public class IngredientGateway {
         }
     }
 
-    public void create(IngredientDTO ingredientDTO) throws GatewayException {
+    public int create(IngredientDTO ingredientDTO) throws GatewayException {
         try {
             Connection conn = connect("recipes.sqlite");
 
@@ -78,7 +78,16 @@ public class IngredientGateway {
             pstmt.setString(4, ingredientDTO.getOriginal());
 
             pstmt.executeUpdate();
+
+            ResultSet rs = pstmt.getGeneratedKeys();
+            int ingredientId = 0;
+            if (rs.next()) {
+                ingredientId = rs.getInt(1);
+            }
+
             pstmt.close();
+
+            return ingredientId;
         } catch (SQLException e1)    {
             throw new GatewayException("Error occurred creating ingredient in data source");
         }
