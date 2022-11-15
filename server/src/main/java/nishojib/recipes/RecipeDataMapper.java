@@ -95,9 +95,9 @@ public class RecipeDataMapper {
      * @param recipe The recipe data transfer object
      * @throws DataMapperException
      */
-    public void create(RecipeDTO recipe) throws DataMapperException {
+    public int create(RecipeDTO recipe) throws DataMapperException {
         try {
-            recipeGateway.create(recipe);
+            return recipeGateway.create(recipe);
         } catch (GatewayException e) {
             throw new DataMapperException("Error occurred creating recipe in data source");
         }
