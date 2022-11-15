@@ -116,7 +116,7 @@ public class RecipeController {
         });
 
         // The delete method that deletes a recipe
-        delete("recipes/:recipeId/", (req, res) -> {
+        delete("recipes/:recipeId", (req, res) -> {
             res.type("application/json");
 
             String recipeIdStr = req.params(":recipeId");
