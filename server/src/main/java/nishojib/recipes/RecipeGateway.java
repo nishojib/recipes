@@ -5,12 +5,26 @@ import nishojib.recipes.models.RecipeDTO;
 
 import java.sql.*;
 
+/**
+ * The Table Data Gateway for a Recipe
+ */
 public class RecipeGateway {
+    /**
+     * The connection method that creates and returns a database connection
+     * @param dbUrl The URL of the database
+     * @return The database connection
+     * @throws SQLException
+     */
     public Connection connect(String dbUrl) throws SQLException {
         String url = "jdbc:sqlite:db/" + dbUrl;
         return DriverManager.getConnection(url);
     }
 
+    /**
+     * The method that returns all the recipes from the SQL table
+     * @return The ResultSet containing all the recipes
+     * @throws GatewayException
+     */
     public ResultSet findAll() throws GatewayException {
         try {
             Connection conn = this.connect("recipes.sqlite");
@@ -23,6 +37,12 @@ public class RecipeGateway {
         }
     }
 
+    /**
+     * The method that returns one recipe from the SQL table by id
+     * @param recipeId The id of the recipe
+     * @return The ResultSet containing one recipe
+     * @throws GatewayException
+     */
     public ResultSet findOneById(int recipeId) throws GatewayException {
         try {
             Connection conn = connect("recipes.sqlite");
@@ -35,6 +55,13 @@ public class RecipeGateway {
         }
     }
 
+    /**
+     * The method that returns all the ingredient ids from the SQL table of a
+     * particular recipe
+     * @param recipeId The id of the recipe
+     * @return The ResultSet containing all the ingredient ids
+     * @throws GatewayException
+     */
     public ResultSet findIngredientIdsFromRecipeId(int recipeId) throws GatewayException {
         try {
             Connection conn = connect("recipes.sqlite");
@@ -47,6 +74,12 @@ public class RecipeGateway {
         }
     }
 
+    /**
+     * The method that deletes a recipes from the SQL table by recipe id
+     * and its corresponding ingredients ids
+     * @param recipeId The id of the recipe
+     * @throws GatewayException
+     */
     public void deleteById(int recipeId) throws GatewayException {
         Connection conn = null;
 
@@ -77,6 +110,11 @@ public class RecipeGateway {
         }
     }
 
+    /**
+     * The method that creates a recipe in the SQL table along with its ingredients
+     * @param recipe The recipe transfer object
+     * @throws GatewayException
+     */
     public void create(RecipeDTO recipe) throws GatewayException {
         Connection conn = null;
 
@@ -132,6 +170,13 @@ public class RecipeGateway {
             throw new GatewayException("Error occurred creating recipe in data source");
         }
     }
+
+    /**
+     * The method that updates a recipe by its id in the SQL table along with its ingredients
+     * @param recipeId The id of the recipe
+     * @param recipe The recipe transfer object
+     * @throws GatewayException
+     */
     public void update(int recipeId, RecipeDTO recipe) throws GatewayException {
         Connection conn = null;
 

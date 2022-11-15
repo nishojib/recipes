@@ -1,7 +1,6 @@
 package nishojib.recipes;
 
 import nishojib.ingredients.IngredientDataMapper;
-import nishojib.ingredients.IngredientGateway;
 import nishojib.ingredients.models.Ingredient;
 import nishojib.recipes.models.Recipe;
 import nishojib.core.exceptions.DataMapperException;
@@ -13,15 +12,32 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Data Mapper for the Recipe
+ */
 public class RecipeDataMapper {
+    /**
+     * Access to the recipe table data gateway
+     */
     RecipeGateway recipeGateway;
+    /**
+     * Access to the ingredients data mapper
+     */
     IngredientDataMapper ingredientMapper;
 
+    /**
+     * The initializer for the recipe data mapper
+     */
     public RecipeDataMapper() {
         recipeGateway = new RecipeGateway();
         ingredientMapper = new IngredientDataMapper();
     }
 
+    /**
+     * The method that finds and returns all recipes
+     * @return A List of Recipe objects
+     * @throws DataMapperException
+     */
     public synchronized List<Recipe> findAll() throws DataMapperException {
         try {
             ResultSet rs = recipeGateway.findAll();
@@ -39,6 +55,12 @@ public class RecipeDataMapper {
         }
     }
 
+    /**
+     * The method that finds and returns one recipe by id
+     * @param recipeId The recipe id of the recipe
+     * @return A Recipe Object that was found using the recipe id
+     * @throws DataMapperException
+     */
     public synchronized Recipe findOneById(int recipeId) throws DataMapperException {
         try {
             ResultSet rs = recipeGateway.findOneById(recipeId);
@@ -53,6 +75,12 @@ public class RecipeDataMapper {
         }
     }
 
+    /**
+     * The method that finds and deletes one recipe by id
+     * @param recipeId The recipe id of the recipe
+     * @return {true} if a recipe is deleted, {false} otherwise
+     * @throws DataMapperException
+     */
     public synchronized boolean deleteById(int recipeId) throws DataMapperException {
         try {
             recipeGateway.deleteById(recipeId);
@@ -62,22 +90,11 @@ public class RecipeDataMapper {
         }
     }
 
-    public static Recipe getRecipeFromResultSet(ResultSet rs) throws SQLException {
-        int id = rs.getInt("id");
-        String title = rs.getString("title");
-        String image = rs.getString("image");
-        int servings = rs.getInt("servings");
-        int healthScore = rs.getInt("healthScore");
-        int cheap = rs.getInt("cheap");
-        int glutenFree = rs.getInt("glutenFree");
-        int dairyFree = rs.getInt("dairyFree");
-        int readyInMinutes = rs.getInt("readyInMinutes");
-        String instructions = rs.getString("instructions");
-        String summary = rs.getString("summary");
-
-        return new Recipe(id, title, image, servings, healthScore, cheap, glutenFree, dairyFree, readyInMinutes, instructions, summary);
-    }
-
+    /**
+     * The method that creates a recipe
+     * @param recipe The recipe data transfer object
+     * @throws DataMapperException
+     */
     public void create(RecipeDTO recipe) throws DataMapperException {
         try {
             recipeGateway.create(recipe);
@@ -86,6 +103,12 @@ public class RecipeDataMapper {
         }
     }
 
+    /**
+     * The method that updates a recipe based on a recipeId
+     * @param recipeId The id of the recipe
+     * @param recipe The recipe data transfer object
+     * @throws DataMapperException
+     */
     public void update(int recipeId, RecipeDTO recipe) throws DataMapperException {
         try {
             recipeGateway.update(recipeId, recipe);
@@ -94,6 +117,12 @@ public class RecipeDataMapper {
         }
     }
 
+    /**
+     * The ingredients of a particular recipe
+     * @param recipeId The id of the recipe
+     * @return A list of Ingredient Object
+     * @throws DataMapperException
+     */
     public List<Ingredient> findIngredientsOfOneById(int recipeId) throws DataMapperException {
         try {
             ArrayList<Integer> ingredientIds = new ArrayList<>();
@@ -115,5 +144,27 @@ public class RecipeDataMapper {
             System.out.println(e.getMessage());
             throw new DataMapperException("Error occurred reading recipes from data source");
         }
+    }
+
+    /**
+     * The method that helps create a Recipe object from ResultSet
+     * @param rs The ResultSet acquired from the table data gateway
+     * @return A Recipe Object corresponding to the ResultSet
+     * @throws SQLException
+     */
+    public static Recipe getRecipeFromResultSet(ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
+        String title = rs.getString("title");
+        String image = rs.getString("image");
+        int servings = rs.getInt("servings");
+        int healthScore = rs.getInt("healthScore");
+        int cheap = rs.getInt("cheap");
+        int glutenFree = rs.getInt("glutenFree");
+        int dairyFree = rs.getInt("dairyFree");
+        int readyInMinutes = rs.getInt("readyInMinutes");
+        String instructions = rs.getString("instructions");
+        String summary = rs.getString("summary");
+
+        return new Recipe(id, title, image, servings, healthScore, cheap, glutenFree, dairyFree, readyInMinutes, instructions, summary);
     }
 }

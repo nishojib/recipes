@@ -15,6 +15,9 @@ import java.util.List;
 
 import static spark.Spark.*;
 
+/**
+ * The Recipe Controller class that gives access to all recipe based rest end points
+ */
 public class RecipeController {
     RecipeDataMapper recipeDataMapper;
 
@@ -22,11 +25,15 @@ public class RecipeController {
         this.recipeDataMapper = new RecipeDataMapper();
     }
 
+    /**
+     * The run method that initializes all rest end points for Recipes
+     */
     public void run() {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         builder.setPrettyPrinting();
 
+        // The get method that gets one recipe
         get("/recipes/:recipeId", (req, res) -> {
             res.type("application/json");
 
@@ -46,6 +53,7 @@ public class RecipeController {
             return gson.toJson(new StandardResponse(StatusResponse.SUCCESS, gson.toJsonTree(recipes)));
         });
 
+        // The get method that gets the ingredients of a recipe
         get("/recipes/:recipeId/ingredients", (req, res) -> {
             res.type("application/json");
 
@@ -62,6 +70,7 @@ public class RecipeController {
             return gson.toJson(new StandardResponse(StatusResponse.SUCCESS, gson.toJsonTree(ingredients)));
         });
 
+        // The get method that gets all recipes
         get("/recipes", (req, res) -> {
             res.type("application/json");
 
@@ -76,6 +85,7 @@ public class RecipeController {
             return gson.toJson(new StandardResponse(StatusResponse.SUCCESS, gson.toJsonTree(recipes)));
         });
 
+        // The post method to create a recipe
         post("recipes", (req, res) -> {
             res.type("application/json");
 
@@ -85,6 +95,8 @@ public class RecipeController {
             return gson.toJson(new StandardResponse(StatusResponse.SUCCESS));
         });
 
+
+        // The put method that updates a recipe
         put("recipes/:recipeId", (req, res) -> {
             res.type("application/json");
 
@@ -97,6 +109,7 @@ public class RecipeController {
             return gson.toJson(new StandardResponse(StatusResponse.SUCCESS));
         });
 
+        // The delete method that deletes a recipe
         delete("recipes/:recipeId/", (req, res) -> {
             res.type("application/json");
 
