@@ -29,6 +29,7 @@ public class RecipeController {
 
         get("/recipes/:recipeId", (req, res) -> {
             res.type("application/json");
+
             String recipeIdStr = req.params(":recipeId");
             int recipeId = Integer.parseInt(recipeIdStr);
             List<Recipe> recipes = new ArrayList<>();
@@ -47,6 +48,7 @@ public class RecipeController {
 
         get("/recipes/:recipeId/ingredients", (req, res) -> {
             res.type("application/json");
+
             String recipeIdStr = req.params(":recipeId");
             int recipeId = Integer.parseInt(recipeIdStr);
             List<Ingredient> ingredients;
@@ -62,6 +64,7 @@ public class RecipeController {
 
         get("/recipes", (req, res) -> {
             res.type("application/json");
+
             List<Recipe> recipes;
 
             try {
@@ -75,6 +78,7 @@ public class RecipeController {
 
         post("recipes", (req, res) -> {
             res.type("application/json");
+
             RecipeDTO recipe = new Gson().fromJson(req.body(), RecipeDTO.class);
             recipeDataMapper.create(recipe);
 
@@ -83,6 +87,7 @@ public class RecipeController {
 
         put("recipes/:recipeId", (req, res) -> {
             res.type("application/json");
+
             String recipeIdStr = req.params(":recipeId");
             int recipeId = Integer.parseInt(recipeIdStr);
 
@@ -92,8 +97,9 @@ public class RecipeController {
             return gson.toJson(new StandardResponse(StatusResponse.SUCCESS));
         });
 
-        delete("recipes/:recipeId", (req, res) -> {
+        delete("recipes/:recipeId/", (req, res) -> {
             res.type("application/json");
+
             String recipeIdStr = req.params(":recipeId");
             int recipeId = Integer.parseInt(recipeIdStr);
             List<DeletedRecipe> recipes = new ArrayList<>();
