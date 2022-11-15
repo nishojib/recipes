@@ -56,9 +56,9 @@ public class IngredientController {
         post("ingredients", (req, res) -> {
             res.type("application/json");
             IngredientDTO ingredient = new Gson().fromJson(req.body(), IngredientDTO.class);
-            ingredientDataMapper.create(ingredient);
+            int createdId = ingredientDataMapper.create(ingredient);
 
-            return gson.toJson(new StandardResponse(StatusResponse.SUCCESS));
+            return gson.toJson(new StandardResponse(StatusResponse.SUCCESS, Integer.toString(createdId)));
         });
 
         put("ingredients/:ingredientId", (req, res) -> {
