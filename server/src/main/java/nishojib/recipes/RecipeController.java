@@ -96,9 +96,9 @@ public class RecipeController {
             res.type("application/json");
 
             RecipeDTO recipe = new Gson().fromJson(req.body(), RecipeDTO.class);
-            recipeDataMapper.create(recipe);
+            int createdId = recipeDataMapper.create(recipe);
 
-            return gson.toJson(new StandardResponse(StatusResponse.SUCCESS));
+            return gson.toJson(new StandardResponse(StatusResponse.SUCCESS, Integer.toString(createdId)));
         });
 
 

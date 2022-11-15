@@ -115,7 +115,7 @@ public class RecipeGateway {
      * @param recipe The recipe transfer object
      * @throws GatewayException
      */
-    public void create(RecipeDTO recipe) throws GatewayException {
+    public int create(RecipeDTO recipe) throws GatewayException {
         Connection conn = null;
 
         try {
@@ -161,6 +161,7 @@ public class RecipeGateway {
 
             pstmt1.close();
             if (pstmt2 != null) pstmt2.close();
+            return recipeId;
         } catch (SQLException e1) {
             try {
                 if (conn != null) conn.rollback();
