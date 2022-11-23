@@ -1,0 +1,144 @@
+@startuml
+scale 1080 width
+skinparam classAttributeIconSize 0
+
+package core <<Folder>> {
+  class DataMapperException {
+    -message: String
+  }
+  class GatewayException {
+    -message: String
+  }
+  class StandardResponse {
+    -status: StatusResponse
+    -message: String
+    -data: JsonElement
+  }
+  enum StatusResponse {
+    -status: String
+    +SUCCESS
+    +ERROR
+  }
+}
+
+package recipes <<Folder>> {
+  class DeletedRecipe {
+    -id: Integer
+  }
+  class Recipe {
+    -id: Integer
+    -title: String
+    -image: String
+    -servings: Integer
+    -healthScore: Integer
+    -cheap: Boolean
+    -glutenFree: Boolean
+    -dairyFree: Boolean
+    -readyInMinutes: Integer
+    -instructions: String
+    -summary: String
+  }
+  class RecipeDTO {
+    -title: String
+    -image: String
+    -servings: Integer
+    -healthScore: Integer
+    -cheap: Boolean
+    -glutenFree: Boolean
+    -dairyFree: Boolean
+    -readyInMinutes: Integer
+    -instructions: String
+    -summary: String
+
+    +getTitle(): String
+    +getImage(): String
+    +getServings(): Integer
+    +getHealthScore(): Integer
+    +isCheap(): Boolean
+    +isGlutenFree(): Boolean
+    +isDairyFree(): Boolean
+    +getReadyInMinutes(): Integer
+    +getInstructions(): String
+    +getSummary(): String
+    +getIngredientIds(): Integer[]
+  }
+  class RecipeController {
+    +recipeDataMapper: RecipeDataMapper
+    +run(): void
+  }
+  class RecipeDataMapper {
+    +recipeGateway: RecipeGateway;
+    +ingredientDataMapper: IngredientDataMapper;
+    +findAll(): Recipe[]
+    +findOneById(recipeId: Integer): Recipe
+    +deletedById(recipeId: Integer): Boolean
+    +create(recipe: RecipeDTO): Integer
+    +update(recipeId: Integer, recipe: RecipeDTO): void
+    +findIngredientsOfOneById(recipeId: Integer): Ingredient[]
+    +getRecipeFromResultSet(rs: ResultSet): Recipe
+  }
+  class RecipeGateway {
+    +connect(dbUrl: String): Connection
+    +findAll(): ResultSet
+    +findOneById(recipeId: Integer): ResultSet
+    +deletedById(recipeId: Integer): void
+    +create(recipe: RecipeDTO): Integer
+    +update(recipeId: Integer, recipe: RecipeDTO): void
+    +findIngredientIdsFromRecipeId(recipeId: Integer): ResultSet
+  }
+}
+
+package ingredients <<Folder>> {
+  class DeletedIngredient {
+    -id: Integer
+  }
+  class Ingredient {
+    -id: Integer
+    -name: String
+    -amount: Float
+    -unit: String
+    -original: String
+  }
+  class IngredientDTO {
+    -name: String
+    -amount: Float
+    -unit: String
+    -original: String
+
+    +getName(): String 
+    +getAmount(): Float
+    +getUnit(): String 
+    +getOriginal(): String 
+  }
+  class IngredientController {
+    +ingredientDataMapper: IngredientDataMapper
+    +run(): void
+  }
+  class IngredientDataMapper {
+    +ingredientGateway: IngredientGateway
+    +findAll(): Ingredient[]
+    +findOneById(ingredientId: Integer): Ingredient
+    +deletedById(ingredientId: Integer): Boolean
+    +create(ingredient: IngredientDTO): Integer
+    +update(ingredientId: Integer, ingredient: IngredientDTO): void
+    +getIngredientFromResultSet(rs: ResultSet): Ingredient
+  }
+  class IngredientGateway {
+    +connect(dbUrl: String): Connection
+    +findAll(): ResultSet
+    +findOneById(ingredientId: Integer): ResultSet
+    +deletedById(ingredientId: Integer): void
+    +create(ingredient: IngredientDTO): Integer
+    +update(ingredientId: Integer, ingredient: IngredientDTO): void
+  }
+}
+
+RecipeDataMapper -- DataMapperException
+IngredientDataMapper -- DataMapperException
+
+RecipeGateway -- GatewayException
+IngredientGateway -- GatewayException
+
+RecipeController -- StandardResponse
+IngredientController -- StandardResponse
+@enduml
