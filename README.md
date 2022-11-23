@@ -9,7 +9,7 @@ https://drive.google.com/file/d/1dKIPuKNXiK61_Y82wPWpzbJX3VVsy4MX/view?usp=shari
 
 ![Design](assets/design.png)
 
-## The UML of the Project
+## The Class Model of the Project
 
 ![UML](assets/uml.svg)
 
